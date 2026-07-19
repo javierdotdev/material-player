@@ -25,15 +25,16 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` pending
 - [x] Elapsed / total time display (`0:00 / 0:07`)
 - [x] Verify playback in a browser
 
-## Phase 2 — Playlist 🚧 (planned)
+## Phase 2 — Playlist ✅ (done)
 
-- [ ] Define a track data model (`title`, `artist`, `cover`, `src`, `duration`)
-- [ ] Support multiple tracks and a "current track" index
-- [ ] Wire **Previous** / **Next** buttons
-- [ ] Auto-advance to the next track on `ended`
-- [ ] Update cover art / song / artist per track
-- [ ] Render a playlist UI toggled by the playlist button
-- [ ] Add a few more license-free sample tracks
+- [x] Define a track data model (`title`, `artist`, `cover`, `src`)
+- [x] Support multiple tracks and a "current track" index
+- [x] Wire **Previous** / **Next** buttons (Previous restarts if > 3s, else prior track)
+- [x] Auto-advance to the next track on `ended`
+- [x] Update cover art / song / artist per track (with a crossfade)
+- [x] Render a playlist UI toggled by the playlist button
+- [x] Add a few more license-free sample tracks
+- [x] Replace the remaining external image (imgur) with local SVG covers
 
 ## Phase 3 — Extra controls 🔮 (planned)
 
@@ -65,3 +66,4 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` pending
 |------|--------|
 | 2026-07-19 | Phase 0 (repo hygiene) and Phase 1 (single-track functional player) completed. |
 | 2026-07-19 | Phase 1 polish: smoothed volume (`.level`) and progress (`.complete`) width transitions. |
+| 2026-07-19 | Phase 2 (playlist) completed: 3-track playlist, previous/next, auto-advance, per-track SVG covers with crossfade, slide-up playlist panel. |

@@ -19,16 +19,29 @@ body {
   width: 500px;
   height: 320px;
   background-color: #fff;
-  background-image: url(https://i.imgur.com/ybyFZ4V.jpg);
-  background-position: center 0;
-  background-repeat: no-repeat;
   border-radius: 5px;
   box-shadow: 0 0 8px -1px rgba(0, 0, 0, 0.25);
   overflow: hidden;
 }
 
+.cover {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  background-position: center 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-transition: opacity 0.4s ease;
+  -moz-transition: opacity 0.4s ease;
+  transition: opacity 0.4s ease;
+}
+
 .info {
   position: relative;
+  z-index: 1;
   width: 100%;
   height: 200px;
   background-color: rgba(255, 51, 51, 0.35);
@@ -95,8 +108,10 @@ body {
 
 .controls {
   position: relative;
+  z-index: 1;
   width: 100%;
   height: 116px;
+  background-color: #fff;
 }
 .controls .playback {
   position: absolute;
@@ -233,6 +248,8 @@ body {
 }
 
 .track {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 4px;
 }
@@ -243,4 +260,54 @@ body {
   -webkit-transition: width 0.25s linear;
   -moz-transition: width 0.25s linear;
   transition: width 0.25s linear;
+}
+
+.playlist-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 60;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background-color: rgba(17, 17, 17, 0.92);
+  color: #fff;
+  overflow-y: auto;
+  -webkit-transform: translateY(100%);
+  -ms-transform: translateY(100%);
+  transform: translateY(100%);
+  -webkit-transition: -webkit-transform 0.3s ease;
+  -moz-transition: -moz-transform 0.3s ease;
+  transition: transform 0.3s ease;
+}
+.playlist-panel.open {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+}
+.playlist-panel li {
+  padding: 12px 18px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  -webkit-transition: background-color 0.15s ease;
+  -moz-transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease;
+}
+.playlist-panel li:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+.playlist-panel li.active .pl-title {
+  color: #f1206a;
+}
+.playlist-panel li .pl-title {
+  display: block;
+  font-size: 14px;
+  font-weight: 300;
+}
+.playlist-panel li .pl-artist {
+  display: block;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
 }

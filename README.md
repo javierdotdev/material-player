@@ -1,11 +1,12 @@
 # material-player
 
 A static, single-screen **Material Design music player** — originally a CodePen UI demo,
-now wired up to real playback. It plays a bundled audio sample with working **play/pause,
-seek, volume, mute and elapsed-time** controls, all built on the HTML5 `<audio>` API.
+now wired up to real playback. It plays a bundled **playlist** with working **play/pause,
+previous/next, seek, volume, mute and elapsed-time** controls, per-track cover art with a
+crossfade, and a slide-up playlist panel — all built on the HTML5 `<audio>` API.
 
-> **Status:** Phase 1 (single track) is functional. Playlist features
-> (previous / next, shuffle, auto-advance) are planned but not implemented yet.
+> **Status:** Phases 1–2 are functional (single track + playlist). Extra controls
+> (shuffle, repeat, favorites) are planned.
 > See the [roadmap](ROADMAP.md) for the full progress tracker.
 
 Live pen (original UI): <https://codepen.io/javierski/pen/xzXyap>
@@ -35,9 +36,9 @@ so the demo works fully offline:
 - **normalize.css 5.0.0** (`vendor/normalize/`) — cross-browser style reset.
 
 Playback logic lives in dependency-free, modern JavaScript in
-[js/index.js](js/index.js) (no jQuery). The audio is a short, license-free sample at
-[audio/sample.wav](audio/sample.wav) — replace it with your own file and update the
-`track` metadata at the top of `js/index.js`.
+[js/index.js](js/index.js) (no jQuery). Audio is a set of short, license-free samples in
+[audio/](audio) with matching local SVG covers in [images/](images) — edit the
+`playlist` array at the top of `js/index.js` to use your own files.
 
 ### What is the `.pug` file?
 
@@ -55,8 +56,11 @@ static server. There is no dev server or watch task.
 Controls:
 
 - **Play / pause** — click the center button, or press **Space**.
+- **Previous / next** — skip tracks; Previous restarts the current track if more than
+  3 seconds have elapsed.
 - **Seek** — click anywhere on the bottom progress track.
 - **Volume** — click the volume bar, or use the − / + buttons.
+- **Playlist** — the bottom-right list icon toggles the track list; click a track to play it.
 
 > **Note:** all assets (audio, Font Awesome, normalize.css, fonts) are bundled locally,
 > so no network connection is required to run the demo.
