@@ -1,0 +1,28 @@
+# OS-generated files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*~
+
+# Sass build artifacts (compiled css/style.css is intentionally committed)
+.sass-cache/
+*.css.map
+
+# Node tooling (only if a build setup is added later)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Logs & temp
+*.log

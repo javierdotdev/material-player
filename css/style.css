@@ -1,0 +1,240 @@
+html,
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: rgba(178, 144, 158, 0.5);
+}
+
+.player {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 500px;
+  height: 320px;
+  background-color: #fff;
+  background-image: url(https://i.imgur.com/ybyFZ4V.jpg);
+  background-position: center 0;
+  background-repeat: no-repeat;
+  border-radius: 5px;
+  box-shadow: 0 0 8px -1px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.info {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background-color: rgba(255, 51, 51, 0.35);
+  overflow: hidden;
+}
+.info .menu-row {
+  margin-top: 12px;
+  width: 100%;
+  height: 40px;
+  z-index: 15;
+}
+.info .menu-row .btn {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  line-height: 40px;
+  text-align: center;
+}
+.info .menu-row .btn.menu, .info .menu-row .btn.options {
+  color: #fff;
+}
+.info .menu-row .btn.heart {
+  color: rgba(230, 230, 230, 0.5);
+}
+.info .menu-row .btn.heart:hover {
+  color: #fff;
+}
+.info .menu-row .btn i {
+  cursor: pointer;
+}
+.info .menu-row .btn.left {
+  margin-left: 5px;
+  float: left;
+}
+.info .menu-row .btn.right {
+  margin-right: 5px;
+  float: right;
+}
+.info .song, .info .artist {
+  font-weight: 300;
+  color: #fff;
+}
+.info .song {
+  position: absolute;
+  bottom: 45px;
+  left: 16px;
+  font-size: 22px;
+}
+.info .artist {
+  position: absolute;
+  bottom: 30px;
+  left: 16px;
+  font-size: 14px;
+}
+.info .time {
+  position: absolute;
+  bottom: 10px;
+  left: 16px;
+  font-weight: 300;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.controls {
+  position: relative;
+  width: 100%;
+  height: 116px;
+}
+.controls .playback {
+  position: absolute;
+  bottom: 20px;
+  left: 15px;
+  width: 180px;
+  height: 60px;
+}
+.controls .playback .previous,
+.controls .playback .pause,
+.controls .playback .next {
+  border-radius: 50%;
+  background-color: #f2f2f2;
+  text-align: center;
+  color: #111;
+  cursor: pointer;
+  -webkit-appearance: none;
+  border: none;
+  outline: none;
+}
+.controls .playback .previous,
+.controls .playback .next {
+  position: absolute;
+  top: 15px;
+  width: 30px;
+  height: 30px;
+  font-size: 14px;
+  line-height: 30px;
+}
+.controls .playback .previous {
+  left: 30px;
+}
+.controls .playback .next {
+  right: 30px;
+}
+.controls .playback .pause {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  line-height: 42px;
+}
+.controls .playback .pause .fa-play {
+  text-indent: 2px;
+}
+.controls .volume {
+  position: absolute;
+  bottom: 20px;
+  left: 200px;
+  width: 180px;
+  height: 60px;
+}
+.controls .volume .vol-down,
+.controls .volume .vol-up {
+  position: absolute;
+  width: 30px;
+  height: 20px;
+  top: 20px;
+  font-size: 18px;
+  line-height: 20px;
+  text-align: center;
+  color: #111;
+  -webkit-appearance: none;
+  background: none;
+  outline: none;
+  border: none;
+}
+.controls .volume .vol-down {
+  left: 5px;
+}
+.controls .volume .vol-up {
+  right: 5px;
+}
+.controls .volume .vol-bar {
+  margin: auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 110px;
+  height: 4px;
+  background-color: #f2f2f2;
+  border-top: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  cursor: pointer;
+  -webkit-transition: all 0.1s ease-in-out;
+  -moz-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
+.controls .volume .vol-bar:hover {
+  height: 12px;
+}
+.controls .volume .vol-bar .level {
+  width: 75%;
+  height: 100%;
+  background-color: #111;
+}
+.controls .playlist {
+  position: absolute;
+  right: 33px;
+  bottom: 50px;
+  width: 30px;
+  height: 30px;
+  font-size: 14px;
+  line-height: 62px;
+  text-align: center;
+  color: #111;
+  cursor: pointer;
+}
+.controls .shuffle {
+  position: absolute;
+  top: -30px;
+  right: 18px;
+  width: 60px;
+  height: 60px;
+  background-color: #f50057;
+  border-radius: 50%;
+  box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.25);
+  font-size: 22px;
+  line-height: 62px;
+  text-align: center;
+  color: #fff;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.track {
+  width: 100%;
+  height: 4px;
+}
+.track .complete {
+  width: 60%;
+  height: 100%;
+  background-color: #f1206a;
+}

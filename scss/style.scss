@@ -1,0 +1,239 @@
+/* The version of Bourbon used in this Pen was 4.* */
+@import "bourbon";
+
+html,
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+body {
+  background-color: rgba(178, 144, 158, 0.5);
+}
+.player {
+  margin: auto;
+  @include position(absolute, 0 0 0 0);
+  width: 500px;
+  height: 320px;
+  background-color: #fff;
+
+  background-image: url(https://i.imgur.com/ybyFZ4V.jpg);
+  background-position: center 0;
+  background-repeat: no-repeat;
+
+  border-radius: 5px;
+  box-shadow: 0 0 8px -1px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.info {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background-color: rgba(255, 51, 51, 0.35);
+  overflow: hidden;
+
+  .menu-row {
+    margin-top: 12px;
+    width: 100%;
+    height: 40px;
+    z-index: 15;
+    .btn {
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      line-height: 40px;
+      text-align: center;
+      &.menu, &.options {
+        color: #fff;
+      }
+      &.heart {
+        color: rgba(230, 230, 230, 0.5);
+        &:hover {
+          color: #fff;
+        }
+      }
+      i {
+        cursor: pointer;
+      }
+      &.left {
+        margin-left: 5px;
+        float: left;
+      }
+      &.right {
+        margin-right: 5px;
+        float: right;
+      }
+    }
+  }
+
+  .song, .artist {
+    font: {
+      weight: 300;
+    }
+    color: #fff;
+  }
+
+  .song {
+    @include position(absolute, null null 45px 16px);
+    font-size: 22px;
+  }
+  .artist {
+    @include position(absolute, null null 30px 16px);
+    font-size: 14px;
+  }
+
+  .time {
+    @include position(absolute, null null 10px 16px);
+    font: {
+      weight: 300;
+      size: 12px;
+    }
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.controls {
+  position: relative;
+  width: 100%;
+  height: 116px;
+
+  .playback {
+    @include position(absolute, null null 20px 15px);
+    width: 180px;
+    height: 60px;
+
+    .previous,
+    .pause,
+    .next {
+      border-radius: 50%;
+      background-color: #f2f2f2;
+      text-align: center;
+      color: #111;
+      cursor: pointer;
+      
+      -webkit-appearance: none;
+      border: none;
+      outline: none;
+    }
+
+    .previous,
+    .next {
+      position: absolute;
+      top: 15px;
+      width: 30px;
+      height: 30px;
+      font-size: 14px;
+      line-height: 30px;
+
+    }
+
+    .previous {
+      left: 30px;
+    }
+
+    .next {
+      right: 30px;
+    }
+
+    .pause {
+      margin: auto;
+      @include position(absolute, 0 0 0 0);
+      width: 44px;
+      height: 44px;
+      font-size: 18px;
+      line-height: 42px;
+      .fa-play {
+        text-indent: 2px;
+      }
+    }
+  }
+
+  .volume {
+    @include position(absolute, null null 20px 200px);
+    width: 180px;
+    height: 60px;
+
+    .vol-down,
+    .vol-up {
+      position: absolute;
+      width: 30px;
+      height: 20px;
+      top: 20px;
+      font-size: 18px;
+      line-height: 20px;
+      text-align: center;
+      color: #111;
+      
+      -webkit-appearance: none;
+      background: none;
+      outline: none;
+      border: none;
+    }
+
+    .vol-down {
+      left: 5px;
+    }
+
+    .vol-up {
+      right: 5px;
+    }
+
+    .vol-bar {
+      margin: auto;
+      @include position(absolute, 0 0 0 0);
+      width: 110px;
+      height: 4px;
+      background-color: #f2f2f2;
+      border-top: 3px solid #fff;
+      border-bottom: 3px solid #fff;
+      cursor: pointer;
+      @include transition(all 0.1s ease-in-out);
+      &:hover {
+        height: 12px;
+      }
+      .level {
+        width: 75%;
+        height: 100%;
+        background-color: #111;
+      }
+    }
+  }
+
+  .playlist {
+    @include position(absolute, null 33px 50px null);
+    width: 30px;
+    height: 30px;
+
+    font-size: 14px;
+    line-height: 62px;
+    text-align: center;
+    color: #111;
+    cursor: pointer;
+  }
+
+  .shuffle {
+    @include position(absolute, -30px 18px null null);
+    width: 60px;
+    height: 60px;
+    background-color: #f50057;
+    border-radius: 50%;
+    box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.25);
+    font-size: 22px;
+    line-height: 62px;
+    text-align: center;
+    color: #fff;
+    z-index: 50;
+    cursor: pointer;
+  }
+}
+
+.track {
+  width: 100%;
+  height: 4px;
+  .complete {
+    width: 60%;
+    height: 100%;
+    background-color: #f1206a;  
+  }
+}
