@@ -69,6 +69,10 @@ body {
 .info .menu-row .btn.heart:hover {
   color: #fff;
 }
+.info .menu-row .btn.heart.liked,
+.info .menu-row .btn.heart.liked:hover {
+  color: #f50057;
+}
 .info .menu-row .btn i {
   cursor: pointer;
 }
@@ -245,6 +249,12 @@ body {
   color: #fff;
   z-index: 50;
   cursor: pointer;
+  -webkit-transition: box-shadow 0.2s ease;
+  -moz-transition: box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease;
+}
+.controls .shuffle.active {
+  box-shadow: 0 0 0 3px rgba(245, 0, 87, 0.4), 0 0 12px 2px rgba(245, 0, 87, 0.6);
 }
 
 .track {

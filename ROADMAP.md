@@ -36,13 +36,13 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` pending
 - [x] Add a few more license-free sample tracks
 - [x] Replace the remaining external image (imgur) with local SVG covers
 
-## Phase 3 — Extra controls 🔮 (planned)
+## Phase 3 — Extra controls � (in progress)
 
-- [ ] Shuffle mode (random order)
-- [ ] Repeat mode (one / all) — optional
-- [ ] Favorite (heart) toggle with `localStorage` persistence
-- [ ] Menu / options buttons behavior (if in scope)
-- [ ] Mute toggle + remember last volume
+- [x] Shuffle mode (random next / auto-advance) with active-state glow
+- [ ] Repeat mode (one / all) — note: "repeat all" is implicit (next wraps around)
+- [x] Favorite (heart) toggle with `localStorage` persistence
+- [ ] Menu / options buttons behavior (deferred — no clear UX yet)
+- [x] Mute toggle (press `m`) + remember last volume, with a dynamic volume icon
 
 ## Phase 4 — Quality & tooling 🔮 (planned)
 
@@ -67,3 +67,5 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` pending
 | 2026-07-19 | Phase 0 (repo hygiene) and Phase 1 (single-track functional player) completed. |
 | 2026-07-19 | Phase 1 polish: smoothed volume (`.level`) and progress (`.complete`) width transitions. |
 | 2026-07-19 | Phase 2 (playlist) completed: 3-track playlist, previous/next, auto-advance, per-track SVG covers with crossfade, slide-up playlist panel. |
+| 2026-07-19 | Phase 3 (partial): shuffle with active glow, favorite (heart) persisted in localStorage, mute (`m` key) + persisted volume with dynamic volume icon. |
+| 2026-07-19 | Regenerated the 3 samples as longer (~18-20s), distinct, richer melodies; added an `audio` error handler for diagnostics. |

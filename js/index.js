@@ -20,6 +20,12 @@
   var DEFAULT_VOLUME = 0.75; // matches the initial .level width in the CSS
   var PREV_RESTART_THRESHOLD = 3; // seconds: below this, "previous" jumps to the prior track
   var COVER_FADE_MS = 200; // half of the CSS opacity transition, for the crossfade swap
+  var STORAGE_FAVORITES = 'material-player:favorites';
+  var STORAGE_VOLUME = 'material-player:volume';
+
+  var shuffle = false;
+  var mutedVolume = null;
+  var favorites = loadFavorites();
 
   var audio = new Audio();
   audio.preload = 'metadata';
@@ -41,6 +47,9 @@
   var volUp = document.querySelector('.vol-up');
   var coverEl = document.querySelector('.cover');
   var playlistPanel = document.querySelector('.playlist-panel');
+  var heartBtn = document.querySelector('.heart');
+  var shuffleBtn = document.querySelector('.shuffle');
+  var volDownIcon = volDown.querySelector('.fa');
 
   // --- Rendering helpers ---
   function currentTrack() {
@@ -73,6 +82,8 @@
 
   function renderVolume() {
     level.style.width = audio.volume * 100 + '%';
+    volDownIcon.classList.toggle('fa-volume-off', audio.volume === 0);
+    volDownIcon.classList.toggle('fa-volume-down', audio.volume > 0);
   }
 
   function setPlayingIcon(isPlaying) {
@@ -96,6 +107,52 @@
       coverEl.style.backgroundImage = 'url("' + url + '")';
       coverEl.style.opacity = '1';
     }, COVER_FADE_MS);
+  }
+
+  // --- Persistence (favorites + volume) ---
+  function loadFavorites() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_FAVORITES)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveFavorites() {
+    try {
+      localStorage.setItem(STORAGE_FAVORITES, JSON.stringify(favorites));
+    } catch (e) { /* storage unavailable */ }
+  }
+
+  function isFavorite(src) {
+    return favorites.indexOf(src) !== -1;
+  }
+
+  function renderFavorite() {
+    heartBtn.classList.toggle('liked', isFavorite(currentTrack().src));
+  }
+
+  function toggleFavorite() {
+    var src = currentTrack().src;
+    var index = favorites.indexOf(src);
+    if (index === -1) {
+      favorites.push(src);
+    } else {
+      favorites.splice(index, 1);
+    }
+    saveFavorites();
+    renderFavorite();
+  }
+
+  function loadVolume() {
+    var stored = parseFloat(localStorage.getItem(STORAGE_VOLUME));
+    return isNaN(stored) ? DEFAULT_VOLUME : Math.max(0, Math.min(1, stored));
+  }
+
+  function saveVolume() {
+    try {
+      localStorage.setItem(STORAGE_VOLUME, String(audio.volume));
+    } catch (e) { /* storage unavailable */ }
   }
 
   // --- Playlist UI ---
@@ -142,6 +199,7 @@
     renderMeta();
     setCover(track.cover, animateCover);
     highlightActiveItem();
+    renderFavorite();
     renderProgress();
     renderTime();
     if (autoplay) {
@@ -150,7 +208,28 @@
   }
 
   function next() {
-    loadTrack(currentIndex + 1, true, true);
+    if (shuffle) {
+      loadTrack(randomIndex(), true, true);
+    } else {
+      loadTrack(currentIndex + 1, true, true);
+    }
+  }
+
+  function randomIndex() {
+    if (playlist.length <= 1) {
+      return currentIndex;
+    }
+    var index;
+    do {
+      index = Math.floor(Math.random() * playlist.length);
+    } while (index === currentIndex);
+    return index;
+  }
+
+  function toggleShuffle() {
+    shuffle = !shuffle;
+    shuffleBtn.classList.toggle('active', shuffle);
+    shuffleBtn.setAttribute('aria-pressed', String(shuffle));
   }
 
   function previous() {
@@ -177,6 +256,17 @@
   function setVolume(value) {
     audio.volume = Math.max(0, Math.min(1, value));
     renderVolume();
+    saveVolume();
+  }
+
+  function toggleMute() {
+    if (audio.volume > 0) {
+      mutedVolume = audio.volume;
+      setVolume(0);
+    } else {
+      setVolume(mutedVolume || DEFAULT_VOLUME);
+      mutedVolume = null;
+    }
   }
 
   // --- Events ---
@@ -184,10 +274,15 @@
   previousBtn.addEventListener('click', previous);
   nextBtn.addEventListener('click', next);
   playlistBtn.addEventListener('click', togglePlaylist);
+  heartBtn.addEventListener('click', toggleFavorite);
+  shuffleBtn.addEventListener('click', toggleShuffle);
 
   audio.addEventListener('play', function () { setPlayingIcon(true); });
   audio.addEventListener('pause', function () { setPlayingIcon(false); });
   audio.addEventListener('ended', next);
+  audio.addEventListener('error', function () {
+    console.error('material-player: failed to load audio', currentTrack().src);
+  });
   audio.addEventListener('loadedmetadata', function () {
     renderProgress();
     renderTime();
@@ -210,15 +305,20 @@
   volUp.addEventListener('click', function () { setVolume(audio.volume + VOLUME_STEP); });
 
   document.addEventListener('keydown', function (event) {
-    if (event.code === 'Space' && event.target === document.body) {
+    if (event.target !== document.body) {
+      return;
+    }
+    if (event.code === 'Space') {
       event.preventDefault();
       togglePlay();
+    } else if (event.key === 'm' || event.key === 'M') {
+      toggleMute();
     }
   });
 
   // --- Init ---
   buildPlaylist();
   setPlayingIcon(false);
-  setVolume(DEFAULT_VOLUME);
+  setVolume(loadVolume());
   loadTrack(0, false, false);
 })();

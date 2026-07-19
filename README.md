@@ -5,8 +5,8 @@ now wired up to real playback. It plays a bundled **playlist** with working **pl
 previous/next, seek, volume, mute and elapsed-time** controls, per-track cover art with a
 crossfade, and a slide-up playlist panel — all built on the HTML5 `<audio>` API.
 
-> **Status:** Phases 1–2 are functional (single track + playlist). Extra controls
-> (shuffle, repeat, favorites) are planned.
+> **Status:** Phases 1–2 are functional (single track + playlist), and Phase 3 adds
+> shuffle, favorites and mute. Repeat mode and the menu/options buttons are still open.
 > See the [roadmap](ROADMAP.md) for the full progress tracker.
 
 Live pen (original UI): <https://codepen.io/javierski/pen/xzXyap>
@@ -58,8 +58,11 @@ Controls:
 - **Play / pause** — click the center button, or press **Space**.
 - **Previous / next** — skip tracks; Previous restarts the current track if more than
   3 seconds have elapsed.
+- **Shuffle** — the bottom-right pink circle toggles random playback (glows when on).
+- **Favorite** — the heart icon likes the current track; it is saved in `localStorage`.
 - **Seek** — click anywhere on the bottom progress track.
-- **Volume** — click the volume bar, or use the − / + buttons.
+- **Volume** — click the volume bar, or use the − / + buttons; press **m** to mute.
+  The last volume is remembered across reloads.
 - **Playlist** — the bottom-right list icon toggles the track list; click a track to play it.
 
 > **Note:** all assets (audio, Font Awesome, normalize.css, fonts) are bundled locally,

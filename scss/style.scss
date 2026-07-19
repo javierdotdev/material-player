@@ -56,6 +56,10 @@ body {
         &:hover {
           color: #fff;
         }
+        &.liked,
+        &.liked:hover {
+          color: #f50057;
+        }
       }
       i {
         cursor: pointer;
@@ -233,6 +237,10 @@ body {
     color: #fff;
     z-index: 50;
     cursor: pointer;
+    @include transition(box-shadow 0.2s ease);
+    &.active {
+      box-shadow: 0 0 0 3px rgba(245, 0, 87, 0.4), 0 0 12px 2px rgba(245, 0, 87, 0.6);
+    }
   }
 }
 
