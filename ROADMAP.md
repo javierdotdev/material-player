@@ -44,13 +44,13 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` pending
 - [x] Menu button (☰) toggles the playlist/queue panel
 - [x] Mute toggle (press `m`) + remember last volume, with a dynamic volume icon
 
-## Phase 4 — Quality & tooling 🔮 (planned)
+## Phase 4 — Quality & tooling � (in progress)
 
-- [ ] Accessibility: real `<button>` semantics, `aria-label`s, keyboard focus
-- [ ] Graceful error handling for failed audio loads
-- [ ] Responsive / mobile layout review
+- [x] Accessibility: button roles, `aria-label`/`aria-pressed`, keyboard operation, focus outline
+- [x] Graceful error handling for failed audio loads (visible toast with `aria-live`)
+- [x] Responsive / mobile layout (viewport meta + scaled card on small screens)
 - [ ] Optional: real npm build to automate `index.pug → index.html` and `scss → css`
-- [ ] Keep README in sync with implemented features
+- [x] Keep README in sync with implemented features
 
 ## Future ideas 💡
 
@@ -74,3 +74,4 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` pending
 | 2026-07-19 | Favorites are now shown per-track in the queue (heart indicator), clarifying that favorites are saved per song regardless of the current shuffle track. |
 | 2026-07-19 | Volume uses a single dynamic icon (click to mute); options menu is now a floating list (icon + short label); added a per-track cinematic glow around the player with an ambient-light toggle (former bottom hamburger). |
 | 2026-07-19 | Enlarged the ambient-light button and added hover tooltips (title) to every control, with dynamic labels for stateful ones (mute, favorite, shuffle, repeat, ambient). |
+| 2026-07-19 | Phase 4: keyboard operability + roles/aria for all controls, visible error toast (aria-live), responsive scaling with viewport meta. |

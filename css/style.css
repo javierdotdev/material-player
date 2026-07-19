@@ -444,3 +444,54 @@ body {
   color: #f1206a;
   font-weight: 600;
 }
+
+.player [tabindex]:focus-visible,
+.player button:focus-visible,
+.pl-list li:focus-visible,
+.options-menu li:focus-visible {
+  outline: 2px solid #f1206a;
+  outline-offset: 2px;
+}
+
+.player-error {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 80;
+  padding: 8px 12px;
+  background-color: rgba(200, 30, 30, 0.94);
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transform: translateY(100%);
+  -ms-transform: translateY(100%);
+  transform: translateY(100%);
+  -webkit-transition: opacity 0.2s ease, -webkit-transform 0.2s ease, visibility 0.2s ease;
+  -moz-transition: opacity 0.2s ease, -moz-transform 0.2s ease, visibility 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+}
+.player-error.show {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+}
+
+@media (max-width: 560px) {
+  .player {
+    -webkit-transform: scale(0.82);
+    -ms-transform: scale(0.82);
+    transform: scale(0.82);
+  }
+}
+@media (max-width: 380px) {
+  .player {
+    -webkit-transform: scale(0.66);
+    -ms-transform: scale(0.66);
+    transform: scale(0.66);
+  }
+}

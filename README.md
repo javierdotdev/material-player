@@ -73,6 +73,13 @@ Controls:
 > **Note:** all assets (audio, Font Awesome, normalize.css, fonts) are bundled locally,
 > so no network connection is required to run the demo.
 
+### Accessibility & responsiveness
+
+- Every control is a labelled button, operable by keyboard (Tab, then Enter/Space),
+  with a visible focus outline; toggles expose `aria-pressed` and there is an
+  `aria-live` region for load errors.
+- The card scales down on small screens (a `viewport` meta tag is included).
+
 ## Development notes
 
 - **Keep sources and compiled output in sync.** There is no build script, so after

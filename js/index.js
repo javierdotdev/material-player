@@ -57,6 +57,7 @@
   var volIcon = volToggle.querySelector('.fa');
   var playerEl = document.querySelector('.player');
   var ambientBtn = document.querySelector('.ambient');
+  var errorEl = document.querySelector('.player-error');
 
   // --- Rendering helpers ---
   function currentTrack() {
@@ -93,12 +94,40 @@
     volIcon.classList.toggle('fa-volume-off', v === 0);
     volIcon.classList.toggle('fa-volume-down', v > 0 && v <= 0.5);
     volIcon.classList.toggle('fa-volume-up', v > 0.5);
-    volToggle.title = v === 0 ? 'Unmute' : 'Mute';
+    setLabel(volToggle, v === 0 ? 'Unmute' : 'Mute');
   }
 
   function setPlayingIcon(isPlaying) {
     playIcon.classList.toggle('fa-pause', isPlaying);
     playIcon.classList.toggle('fa-play', !isPlaying);
+  }
+
+  // --- Accessibility & feedback helpers ---
+  function setLabel(el, text) {
+    el.title = text;
+    el.setAttribute('aria-label', text);
+  }
+
+  function keyActivate(el) {
+    el.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ' || event.code === 'Space') {
+        event.preventDefault();
+        el.click();
+      }
+    });
+  }
+
+  var errorTimer = null;
+  function showError(message) {
+    if (!errorEl) {
+      return;
+    }
+    errorEl.textContent = message;
+    errorEl.classList.add('show');
+    window.clearTimeout(errorTimer);
+    errorTimer = window.setTimeout(function () {
+      errorEl.classList.remove('show');
+    }, 3500);
   }
 
   var coverFadeTimer = null;
@@ -141,7 +170,7 @@
   function renderFavorite() {
     var liked = isFavorite(currentTrack().src);
     heartBtn.classList.toggle('liked', liked);
-    heartBtn.title = liked ? 'Remove favorite' : 'Add to favorite';
+    setLabel(heartBtn, liked ? 'Remove favorite' : 'Add to favorite');
   }
 
   function toggleFavorite() {
@@ -186,7 +215,8 @@
   function toggleAmbient() {
     ambientOn = !ambientOn;
     ambientBtn.classList.toggle('active', ambientOn);
-    ambientBtn.title = 'Ambient light: ' + (ambientOn ? 'on' : 'off');
+    ambientBtn.setAttribute('aria-pressed', String(ambientOn));
+    setLabel(ambientBtn, 'Ambient light: ' + (ambientOn ? 'on' : 'off'));
     applyGlow();
     saveAmbient();
   }
@@ -208,10 +238,13 @@
       item.appendChild(title);
       item.appendChild(artist);
       item.appendChild(fav);
+      item.setAttribute('role', 'button');
+      item.tabIndex = 0;
       item.addEventListener('click', function () {
         loadTrack(index, true, true);
         closePlaylist();
       });
+      keyActivate(item);
       plList.appendChild(item);
     });
     renderPlaylistFavorites();
@@ -283,13 +316,12 @@
     shuffle = !shuffle;
     shuffleBtn.classList.toggle('active', shuffle);
     shuffleBtn.setAttribute('aria-pressed', String(shuffle));
-    shuffleBtn.title = 'Shuffle: ' + (shuffle ? 'on' : 'off');
+    setLabel(shuffleBtn, 'Shuffle: ' + (shuffle ? 'on' : 'off'));
   }
 
   function renderRepeat() {
     optionsBtn.classList.toggle('repeat-on', repeatMode !== 'off');
-    optionsBtn.setAttribute('aria-label', 'Repeat: ' + repeatMode);
-    optionsBtn.title = 'Repeat: ' + repeatMode;
+    setLabel(optionsBtn, 'Repeat: ' + repeatMode);
     var items = optionsMenu.querySelectorAll('li');
     for (var i = 0; i < items.length; i++) {
       items[i].classList.toggle('active', items[i].getAttribute('data-repeat') === repeatMode);
@@ -385,9 +417,12 @@
     }
   });
   Array.prototype.forEach.call(optionsMenu.querySelectorAll('li'), function (item) {
+    item.setAttribute('role', 'button');
+    item.tabIndex = 0;
     item.addEventListener('click', function () {
       setRepeat(item.getAttribute('data-repeat'));
     });
+    keyActivate(item);
   });
 
   audio.addEventListener('play', function () { setPlayingIcon(true); });
@@ -395,6 +430,7 @@
   audio.addEventListener('ended', handleEnded);
   audio.addEventListener('error', function () {
     console.error('material-player: failed to load audio', currentTrack().src);
+    showError('Unable to load this track.');
   });
   audio.addEventListener('loadedmetadata', function () {
     renderProgress();
@@ -452,12 +488,22 @@
   setVolume(loadVolume());
   renderRepeat();
   ambientBtn.classList.toggle('active', ambientOn);
-  menuBtn.title = 'Playlist';
-  playBtn.title = 'Play / pause';
-  previousBtn.title = 'Previous';
-  nextBtn.title = 'Next';
-  volBar.title = 'Volume';
-  shuffleBtn.title = 'Shuffle: ' + (shuffle ? 'on' : 'off');
-  ambientBtn.title = 'Ambient light: ' + (ambientOn ? 'on' : 'off');
+
+  setLabel(menuBtn, 'Playlist');
+  setLabel(playBtn, 'Play / pause');
+  setLabel(previousBtn, 'Previous');
+  setLabel(nextBtn, 'Next');
+  setLabel(volBar, 'Volume');
+  setLabel(shuffleBtn, 'Shuffle: ' + (shuffle ? 'on' : 'off'));
+  setLabel(ambientBtn, 'Ambient light: ' + (ambientOn ? 'on' : 'off'));
+
+  [previousBtn, nextBtn, menuBtn, optionsBtn, heartBtn, shuffleBtn, ambientBtn].forEach(function (el) {
+    el.setAttribute('role', 'button');
+    el.setAttribute('tabindex', '0');
+    keyActivate(el);
+  });
+  shuffleBtn.setAttribute('aria-pressed', String(shuffle));
+  ambientBtn.setAttribute('aria-pressed', String(ambientOn));
+
   loadTrack(0, false, false);
 })();

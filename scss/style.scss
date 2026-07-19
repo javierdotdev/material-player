@@ -410,3 +410,45 @@ body {
     }
   }
 }
+
+/* --- Accessibility: visible keyboard focus --- */
+.player [tabindex]:focus-visible,
+.player button:focus-visible,
+.pl-list li:focus-visible,
+.options-menu li:focus-visible {
+  outline: 2px solid #f1206a;
+  outline-offset: 2px;
+}
+
+/* --- Error toast --- */
+.player-error {
+  @include position(absolute, null 0 0 0);
+  z-index: 80;
+  padding: 8px 12px;
+  background-color: rgba(200, 30, 30, 0.94);
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(100%);
+  @include transition(opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease);
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+/* --- Responsive: scale the fixed-size card on small screens --- */
+@media (max-width: 560px) {
+  .player {
+    transform: scale(0.82);
+  }
+}
+@media (max-width: 380px) {
+  .player {
+    transform: scale(0.66);
+  }
+}
