@@ -64,3 +64,4 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` pending
 | Date | Change |
 |------|--------|
 | 2026-07-19 | Phase 0 (repo hygiene) and Phase 1 (single-track functional player) completed. |
+| 2026-07-19 | Phase 1 polish: smoothed volume (`.level`) and progress (`.complete`) width transitions. |
