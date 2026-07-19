@@ -9,23 +9,25 @@
 
   // --- Playlist (local, license-free samples) ---
   var playlist = [
-    { title: 'Sample Melody', artist: 'material-player demo', src: 'audio/sample.wav', cover: 'images/cover1.svg' },
-    { title: 'Second Sketch', artist: 'material-player demo', src: 'audio/sample2.wav', cover: 'images/cover2.svg' },
-    { title: 'Third Loop', artist: 'material-player demo', src: 'audio/sample3.wav', cover: 'images/cover3.svg' }
+    { title: 'Sample Melody', artist: 'material-player demo', src: 'audio/sample.wav', cover: 'images/cover1.svg', glow: 'rgba(255, 95, 109, 0.55)' },
+    { title: 'Second Sketch', artist: 'material-player demo', src: 'audio/sample2.wav', cover: 'images/cover2.svg', glow: 'rgba(120, 80, 220, 0.55)' },
+    { title: 'Third Loop', artist: 'material-player demo', src: 'audio/sample3.wav', cover: 'images/cover3.svg', glow: 'rgba(56, 210, 130, 0.55)' }
   ];
 
   var currentIndex = 0;
 
-  var VOLUME_STEP = 0.1;
   var DEFAULT_VOLUME = 0.75; // matches the initial .level width in the CSS
   var PREV_RESTART_THRESHOLD = 3; // seconds: below this, "previous" jumps to the prior track
   var COVER_FADE_MS = 200; // half of the CSS opacity transition, for the crossfade swap
   var STORAGE_FAVORITES = 'material-player:favorites';
   var STORAGE_VOLUME = 'material-player:volume';
+  var STORAGE_AMBIENT = 'material-player:ambient';
 
   var shuffle = false;
+  var repeatMode = 'off'; // 'off' | 'all' | 'one'
   var mutedVolume = null;
   var favorites = loadFavorites();
+  var ambientOn = loadAmbient();
 
   var audio = new Audio();
   audio.preload = 'metadata';
@@ -35,7 +37,6 @@
   var playIcon = playBtn.querySelector('.fa');
   var previousBtn = document.querySelector('.previous');
   var nextBtn = document.querySelector('.next');
-  var playlistBtn = document.querySelector('.playlist');
   var songEl = document.querySelector('.song');
   var artistEl = document.querySelector('.artist');
   var timeEl = document.querySelector('.time');
@@ -43,13 +44,19 @@
   var complete = document.querySelector('.complete');
   var volBar = document.querySelector('.vol-bar');
   var level = document.querySelector('.level');
-  var volDown = document.querySelector('.vol-down');
-  var volUp = document.querySelector('.vol-up');
+  var volToggle = document.querySelector('.vol-toggle');
   var coverEl = document.querySelector('.cover');
   var playlistPanel = document.querySelector('.playlist-panel');
+  var plList = document.querySelector('.pl-list');
+  var plClose = document.querySelector('.pl-close');
+  var optionsMenu = document.querySelector('.options-menu');
   var heartBtn = document.querySelector('.heart');
   var shuffleBtn = document.querySelector('.shuffle');
-  var volDownIcon = volDown.querySelector('.fa');
+  var menuBtn = document.querySelector('.menu');
+  var optionsBtn = document.querySelector('.options');
+  var volIcon = volToggle.querySelector('.fa');
+  var playerEl = document.querySelector('.player');
+  var ambientBtn = document.querySelector('.ambient');
 
   // --- Rendering helpers ---
   function currentTrack() {
@@ -81,9 +88,12 @@
   }
 
   function renderVolume() {
-    level.style.width = audio.volume * 100 + '%';
-    volDownIcon.classList.toggle('fa-volume-off', audio.volume === 0);
-    volDownIcon.classList.toggle('fa-volume-down', audio.volume > 0);
+    var v = audio.volume;
+    level.style.width = v * 100 + '%';
+    volIcon.classList.toggle('fa-volume-off', v === 0);
+    volIcon.classList.toggle('fa-volume-down', v > 0 && v <= 0.5);
+    volIcon.classList.toggle('fa-volume-up', v > 0.5);
+    volToggle.title = v === 0 ? 'Unmute' : 'Mute';
   }
 
   function setPlayingIcon(isPlaying) {
@@ -129,7 +139,9 @@
   }
 
   function renderFavorite() {
-    heartBtn.classList.toggle('liked', isFavorite(currentTrack().src));
+    var liked = isFavorite(currentTrack().src);
+    heartBtn.classList.toggle('liked', liked);
+    heartBtn.title = liked ? 'Remove favorite' : 'Add to favorite';
   }
 
   function toggleFavorite() {
@@ -142,6 +154,7 @@
     }
     saveFavorites();
     renderFavorite();
+    renderPlaylistFavorites();
   }
 
   function loadVolume() {
@@ -155,35 +168,74 @@
     } catch (e) { /* storage unavailable */ }
   }
 
+  function loadAmbient() {
+    var stored = localStorage.getItem(STORAGE_AMBIENT);
+    return stored === null ? true : stored === 'true';
+  }
+
+  function saveAmbient() {
+    try {
+      localStorage.setItem(STORAGE_AMBIENT, String(ambientOn));
+    } catch (e) { /* storage unavailable */ }
+  }
+
+  function applyGlow() {
+    playerEl.style.setProperty('--glow', ambientOn ? currentTrack().glow : 'transparent');
+  }
+
+  function toggleAmbient() {
+    ambientOn = !ambientOn;
+    ambientBtn.classList.toggle('active', ambientOn);
+    ambientBtn.title = 'Ambient light: ' + (ambientOn ? 'on' : 'off');
+    applyGlow();
+    saveAmbient();
+  }
+
   // --- Playlist UI ---
   function buildPlaylist() {
-    playlistPanel.innerHTML = '';
+    plList.innerHTML = '';
     playlist.forEach(function (track, index) {
       var item = document.createElement('li');
       var title = document.createElement('span');
       var artist = document.createElement('span');
+      var fav = document.createElement('i');
       title.className = 'pl-title';
       artist.className = 'pl-artist';
+      fav.className = 'fa fa-heart pl-fav';
+      fav.setAttribute('aria-hidden', 'true');
       title.textContent = track.title;
       artist.textContent = track.artist;
       item.appendChild(title);
       item.appendChild(artist);
+      item.appendChild(fav);
       item.addEventListener('click', function () {
         loadTrack(index, true, true);
         closePlaylist();
       });
-      playlistPanel.appendChild(item);
+      plList.appendChild(item);
     });
+    renderPlaylistFavorites();
+  }
+
+  function renderPlaylistFavorites() {
+    var items = plList.children;
+    for (var i = 0; i < items.length; i++) {
+      items[i].classList.toggle('is-fav', isFavorite(playlist[i].src));
+    }
   }
 
   function highlightActiveItem() {
-    var items = playlistPanel.children;
+    var items = plList.children;
     for (var i = 0; i < items.length; i++) {
       items[i].classList.toggle('active', i === currentIndex);
     }
   }
 
-  function togglePlaylist() {
+  function togglePlaylist(event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    closeOptionsMenu();
     playlistPanel.classList.toggle('open');
   }
 
@@ -198,6 +250,7 @@
     audio.src = track.src;
     renderMeta();
     setCover(track.cover, animateCover);
+    applyGlow();
     highlightActiveItem();
     renderFavorite();
     renderProgress();
@@ -230,6 +283,50 @@
     shuffle = !shuffle;
     shuffleBtn.classList.toggle('active', shuffle);
     shuffleBtn.setAttribute('aria-pressed', String(shuffle));
+    shuffleBtn.title = 'Shuffle: ' + (shuffle ? 'on' : 'off');
+  }
+
+  function renderRepeat() {
+    optionsBtn.classList.toggle('repeat-on', repeatMode !== 'off');
+    optionsBtn.setAttribute('aria-label', 'Repeat: ' + repeatMode);
+    optionsBtn.title = 'Repeat: ' + repeatMode;
+    var items = optionsMenu.querySelectorAll('li');
+    for (var i = 0; i < items.length; i++) {
+      items[i].classList.toggle('active', items[i].getAttribute('data-repeat') === repeatMode);
+    }
+  }
+
+  function setRepeat(mode) {
+    repeatMode = mode;
+    renderRepeat();
+    closeOptionsMenu();
+  }
+
+  function toggleOptionsMenu(event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    closePlaylist();
+    optionsMenu.classList.toggle('open');
+  }
+
+  function closeOptionsMenu() {
+    optionsMenu.classList.remove('open');
+  }
+
+  function handleEnded() {
+    if (repeatMode === 'one') {
+      audio.currentTime = 0;
+      audio.play().catch(function () { /* ignore autoplay/user-gesture rejections */ });
+      return;
+    }
+    if (repeatMode === 'off' && !shuffle && currentIndex === playlist.length - 1) {
+      audio.currentTime = 0;
+      renderProgress();
+      renderTime();
+      return;
+    }
+    next();
   }
 
   function previous() {
@@ -273,13 +370,29 @@
   playBtn.addEventListener('click', togglePlay);
   previousBtn.addEventListener('click', previous);
   nextBtn.addEventListener('click', next);
-  playlistBtn.addEventListener('click', togglePlaylist);
   heartBtn.addEventListener('click', toggleFavorite);
   shuffleBtn.addEventListener('click', toggleShuffle);
+  menuBtn.addEventListener('click', togglePlaylist);
+  optionsBtn.addEventListener('click', toggleOptionsMenu);
+  ambientBtn.addEventListener('click', toggleAmbient);
+  plClose.addEventListener('click', function (event) {
+    event.stopPropagation();
+    closePlaylist();
+  });
+  playlistPanel.addEventListener('click', function (event) {
+    if (!event.target.closest('.pl-list li') && !event.target.closest('.pl-close')) {
+      closePlaylist();
+    }
+  });
+  Array.prototype.forEach.call(optionsMenu.querySelectorAll('li'), function (item) {
+    item.addEventListener('click', function () {
+      setRepeat(item.getAttribute('data-repeat'));
+    });
+  });
 
   audio.addEventListener('play', function () { setPlayingIcon(true); });
   audio.addEventListener('pause', function () { setPlayingIcon(false); });
-  audio.addEventListener('ended', next);
+  audio.addEventListener('ended', handleEnded);
   audio.addEventListener('error', function () {
     console.error('material-player: failed to load audio', currentTrack().src);
   });
@@ -301,10 +414,27 @@
   volBar.addEventListener('click', function (event) {
     setVolume(ratioFromClick(event, volBar));
   });
-  volDown.addEventListener('click', function () { setVolume(audio.volume - VOLUME_STEP); });
-  volUp.addEventListener('click', function () { setVolume(audio.volume + VOLUME_STEP); });
+  volToggle.addEventListener('click', toggleMute);
+
+  document.addEventListener('click', function (event) {
+    if (optionsMenu.classList.contains('open') &&
+        !optionsMenu.contains(event.target) &&
+        !optionsBtn.contains(event.target)) {
+      closeOptionsMenu();
+    }
+    if (playlistPanel.classList.contains('open') &&
+        !playlistPanel.contains(event.target) &&
+        !menuBtn.contains(event.target)) {
+      closePlaylist();
+    }
+  });
 
   document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      closePlaylist();
+      closeOptionsMenu();
+      return;
+    }
     if (event.target !== document.body) {
       return;
     }
@@ -320,5 +450,14 @@
   buildPlaylist();
   setPlayingIcon(false);
   setVolume(loadVolume());
+  renderRepeat();
+  ambientBtn.classList.toggle('active', ambientOn);
+  menuBtn.title = 'Playlist';
+  playBtn.title = 'Play / pause';
+  previousBtn.title = 'Previous';
+  nextBtn.title = 'Next';
+  volBar.title = 'Volume';
+  shuffleBtn.title = 'Shuffle: ' + (shuffle ? 'on' : 'off');
+  ambientBtn.title = 'Ambient light: ' + (ambientOn ? 'on' : 'off');
   loadTrack(0, false, false);
 })();

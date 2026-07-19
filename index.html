@@ -36,19 +36,32 @@
       <div class="next"><i class="fa fa-step-forward"></i></div>
     </div>
     <div class="volume">
-      <button class="vol-down"><i class="fa fa-volume-down"></i></button>
+      <button class="vol-toggle" type="button" aria-label="Mute"><i class="fa fa-volume-up"></i></button>
       <div class="vol-bar">
         <div class="level"></div>
       </div>
-      <button class="vol-up"><i class="fa fa-volume-up"></i></button>
     </div>
-    <div class="playlist"><i class="fa fa-bars"></i></div>
+    <div class="ambient" role="button" tabindex="0" aria-label="Ambient light"><i class="fa fa-lightbulb-o"></i></div>
     <div class="shuffle"><i class="fa fa-random"></i></div>
   </div>
   <div class="track">
     <div class="complete"></div>
   </div>
-  <ul class="playlist-panel"></ul>
+  <div class="playlist-panel">
+    <div class="pl-header">
+      <span class="pl-heading">Queue</span>
+      <button class="pl-close" type="button" aria-label="Close playlist">&times;</button>
+    </div>
+    <ul class="pl-list"></ul>
+  </div>
+  <div class="options-menu">
+    <div class="options-title">Repeat</div>
+    <ul class="options-list">
+      <li data-repeat="off"><i class="fa fa-ban" aria-hidden="true"></i><span>Off</span></li>
+      <li data-repeat="all"><i class="fa fa-repeat" aria-hidden="true"></i><span>All</span></li>
+      <li data-repeat="one"><i class="fa fa-repeat" aria-hidden="true"></i><span>One</span></li>
+    </ul>
+  </div>
 </div>
   <script src="js/index.js"></script>
 

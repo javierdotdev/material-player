@@ -36,12 +36,12 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` pending
 - [x] Add a few more license-free sample tracks
 - [x] Replace the remaining external image (imgur) with local SVG covers
 
-## Phase 3 — Extra controls � (in progress)
+## Phase 3 — Extra controls ✅ (done)
 
 - [x] Shuffle mode (random next / auto-advance) with active-state glow
-- [ ] Repeat mode (one / all) — note: "repeat all" is implicit (next wraps around)
+- [x] Repeat mode (off / all / one) via the options button, respected on auto-advance
 - [x] Favorite (heart) toggle with `localStorage` persistence
-- [ ] Menu / options buttons behavior (deferred — no clear UX yet)
+- [x] Menu button (☰) toggles the playlist/queue panel
 - [x] Mute toggle (press `m`) + remember last volume, with a dynamic volume icon
 
 ## Phase 4 — Quality & tooling 🔮 (planned)
@@ -69,3 +69,8 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` pending
 | 2026-07-19 | Phase 2 (playlist) completed: 3-track playlist, previous/next, auto-advance, per-track SVG covers with crossfade, slide-up playlist panel. |
 | 2026-07-19 | Phase 3 (partial): shuffle with active glow, favorite (heart) persisted in localStorage, mute (`m` key) + persisted volume with dynamic volume icon. |
 | 2026-07-19 | Regenerated the 3 samples as longer (~18-20s), distinct, richer melodies; added an `audio` error handler for diagnostics. |
+| 2026-07-19 | Phase 3 completed: options button cycles repeat (off/all/one) with a '1' badge; menu button toggles the playlist/queue. |
+| 2026-07-19 | UX: playlist panel now has a header + close (×), and closes on outside/empty click or Escape; options button opens a floating repeat menu instead of cycling directly. |
+| 2026-07-19 | Favorites are now shown per-track in the queue (heart indicator), clarifying that favorites are saved per song regardless of the current shuffle track. |
+| 2026-07-19 | Volume uses a single dynamic icon (click to mute); options menu is now a floating list (icon + short label); added a per-track cinematic glow around the player with an ambient-light toggle (former bottom hamburger). |
+| 2026-07-19 | Enlarged the ambient-light button and added hover tooltips (title) to every control, with dynamic labels for stateful ones (mute, favorite, shuffle, repeat, ambient). |

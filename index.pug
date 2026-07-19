@@ -20,16 +20,30 @@
       .next
         i.fa.fa-step-forward
     .volume
-      button.vol-down
-        i.fa.fa-volume-down
+      button.vol-toggle(type='button' aria-label='Mute')
+        i.fa.fa-volume-up
       .vol-bar
         .level
-      button.vol-up
-        i.fa.fa-volume-up
-    .playlist
-      i.fa.fa-bars
+    .ambient(role='button' tabindex='0' aria-label='Ambient light')
+      i.fa.fa-lightbulb-o
     .shuffle
       i.fa.fa-random
   .track
     .complete
-  ul.playlist-panel
+  .playlist-panel
+    .pl-header
+      span.pl-heading Queue
+      button.pl-close(type='button' aria-label='Close playlist') ×
+    ul.pl-list
+  .options-menu
+    .options-title Repeat
+    ul.options-list
+      li(data-repeat='off')
+        i.fa.fa-ban(aria-hidden='true')
+        span Off
+      li(data-repeat='all')
+        i.fa.fa-repeat(aria-hidden='true')
+        span All
+      li(data-repeat='one')
+        i.fa.fa-repeat(aria-hidden='true')
+        span One

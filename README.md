@@ -5,9 +5,9 @@ now wired up to real playback. It plays a bundled **playlist** with working **pl
 previous/next, seek, volume, mute and elapsed-time** controls, per-track cover art with a
 crossfade, and a slide-up playlist panel — all built on the HTML5 `<audio>` API.
 
-> **Status:** Phases 1–2 are functional (single track + playlist), and Phase 3 adds
-> shuffle, favorites and mute. Repeat mode and the menu/options buttons are still open.
-> See the [roadmap](ROADMAP.md) for the full progress tracker.
+> **Status:** Phases 1–3 are functional — single track, playlist, and extra controls
+> (shuffle, repeat, favorites, mute). See the [roadmap](ROADMAP.md) for the full
+> progress tracker.
 
 Live pen (original UI): <https://codepen.io/javierski/pen/xzXyap>
 
@@ -59,11 +59,16 @@ Controls:
 - **Previous / next** — skip tracks; Previous restarts the current track if more than
   3 seconds have elapsed.
 - **Shuffle** — the bottom-right pink circle toggles random playback (glows when on).
-- **Favorite** — the heart icon likes the current track; it is saved in `localStorage`.
+- **Repeat** — the top-right options button (⋮) opens a small menu: Off / All / One.
+- **Favorite** — the heart icon likes the current track (saved in `localStorage`); liked
+  tracks are also flagged in the queue.
 - **Seek** — click anywhere on the bottom progress track.
-- **Volume** — click the volume bar, or use the − / + buttons; press **m** to mute.
-  The last volume is remembered across reloads.
-- **Playlist** — the bottom-right list icon toggles the track list; click a track to play it.
+- **Volume** — click the volume bar to set the level; click the speaker icon (or press
+  **m**) to mute/unmute. The last volume is remembered across reloads.
+- **Ambient light** — the bulb icon toggles a cinematic glow around the player that
+  matches each track's cover color.
+- **Playlist** — the top-left menu (☰) opens the queue; click a track to play it, and
+  close it with ×, Escape, or a click outside.
 
 > **Note:** all assets (audio, Font Awesome, normalize.css, fonts) are bundled locally,
 > so no network connection is required to run the demo.
