@@ -1,10 +1,14 @@
 # material-player
 
-A static, single-screen **Material Design music-player UI demo** — a CodePen export.
-It is **not** a functional player: there is no real audio. Play/pause, volume and the
-track progress bar are simulated in the browser with jQuery and a small `Ticker` script.
+A static, single-screen **Material Design music player** — originally a CodePen UI demo,
+now wired up to real playback. It plays a bundled audio sample with working **play/pause,
+seek, volume, mute and elapsed-time** controls, all built on the HTML5 `<audio>` API.
 
-Live pen: <https://codepen.io/javierski/pen/xzXyap>
+> **Status:** Phase 1 (single track) is functional. Playlist features
+> (previous / next, shuffle, auto-advance) are planned but not implemented yet.
+> See the [roadmap](ROADMAP.md) for the full progress tracker.
+
+Live pen (original UI): <https://codepen.io/javierski/pen/xzXyap>
 
 ## What it looks like
 
@@ -23,18 +27,17 @@ sources and their pre-compiled output:
 | [index.pug](index.pug) | [index.html](index.html) | [Pug](https://pugjs.org/) (HTML templating) |
 | [scss/style.scss](scss/style.scss) | [css/style.css](css/style.css) | [Sass](https://sass-lang.com/) + [Bourbon 4.x](https://www.bourbon.io/) |
 
-Runtime dependencies are **vendored locally** under [vendor/](vendor) (no CDN, no npm),
+Runtime assets are **vendored locally** under [vendor/](vendor) (no CDN, no npm),
 so the demo works fully offline:
 
-- **jQuery 2.1.3** (`vendor/jquery/`) — DOM handling and click events in [js/index.js](js/index.js).
 - **Font Awesome 4.2.0** (`vendor/font-awesome/`) — icons via classes like `fa fa-play`,
   with its web fonts in `vendor/font-awesome/fonts/`.
 - **normalize.css 5.0.0** (`vendor/normalize/`) — cross-browser style reset.
 
-The progress animation is handled by a small **local** helper,
-[js/ticker.js](js/ticker.js), which exposes a global `Ticker` and animates the
-`.complete` track. It replaces the original external CodePen script, so the project
-has no runtime dependency on CodePen either.
+Playback logic lives in dependency-free, modern JavaScript in
+[js/index.js](js/index.js) (no jQuery). The audio is a short, license-free sample at
+[audio/sample.wav](audio/sample.wav) — replace it with your own file and update the
+`track` metadata at the top of `js/index.js`.
 
 ### What is the `.pug` file?
 
@@ -49,8 +52,14 @@ editing the `.pug` means you must also update the `.html` by hand so both stay i
 Open [index.html](index.html) directly in a browser, or serve the folder with any
 static server. There is no dev server or watch task.
 
-> **Note:** all assets (jQuery, Font Awesome, normalize.css, fonts) are bundled in
-> [vendor/](vendor), so no network connection is required to run the demo.
+Controls:
+
+- **Play / pause** — click the center button, or press **Space**.
+- **Seek** — click anywhere on the bottom progress track.
+- **Volume** — click the volume bar, or use the − / + buttons.
+
+> **Note:** all assets (audio, Font Awesome, normalize.css, fonts) are bundled locally,
+> so no network connection is required to run the demo.
 
 ## Development notes
 
