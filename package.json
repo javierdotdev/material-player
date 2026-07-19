@@ -1,0 +1,16 @@
+{
+  "name": "material-player",
+  "version": "1.0.0",
+  "description": "A static Material Design music player built on the HTML5 <audio> API.",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build:css": "sass --no-source-map scss/style.scss css/style.css",
+    "watch:css": "sass --watch --no-source-map scss/style.scss css/style.css",
+    "build": "npm run build:css",
+    "serve": "npx --yes http-server -c-1 -o"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0"
+  }
+}

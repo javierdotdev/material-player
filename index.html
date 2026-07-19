@@ -1,52 +1,49 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Material Design Player</title>
-  
-    <link rel="stylesheet" href="vendor/normalize/normalize.css">
-
+  <link rel="stylesheet" href="vendor/normalize/normalize.css">
   <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
-
-      <link rel="stylesheet" href="css/style.css">
-
-  
+  <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-  
 <div class="player">
   <div class="cover"></div>
   <div class="info">
     <div class="menu-row">
-      <div class="btn menu left"><i class="fa fa-bars"></i></div>
-      <div class="btn options right"><i class="fa fa-ellipsis-v"></i></div>
-      <div class="btn heart right"><i class="fa fa-heart"></i></div>
+      <button type="button" class="btn menu left" aria-label="Playlist"><i class="fa fa-bars" aria-hidden="true"></i></button>
+      <button type="button" class="btn options right" aria-label="Repeat" aria-haspopup="menu"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></button>
+      <button type="button" class="btn heart right" aria-label="Add to favorite" aria-pressed="false"><i class="fa fa-heart" aria-hidden="true"></i></button>
     </div>
-    <div class="song">Feel So Close - Radio Edit</div>
-    <div class="artist">Calvin Harris</div>
-    <div class="time">3:26</div>
+    <div class="song">&nbsp;</div>
+    <div class="artist">&nbsp;</div>
+    <div class="time">0:00 / 0:00</div>
   </div>
   <div class="controls">
     <div class="playback">
-      <div class="previous"><i class="fa fa-step-backward"></i></div>
-      <button class="pause"><i class="fa fa-pause"></i></button>
-      <div class="next"><i class="fa fa-step-forward"></i></div>
+      <button type="button" class="previous" aria-label="Previous"><i class="fa fa-step-backward" aria-hidden="true"></i></button>
+      <button type="button" class="pause" aria-label="Play / pause"><i class="fa fa-play" aria-hidden="true"></i></button>
+      <button type="button" class="next" aria-label="Next"><i class="fa fa-step-forward" aria-hidden="true"></i></button>
     </div>
     <div class="volume">
-      <button class="vol-toggle" type="button" aria-label="Mute"><i class="fa fa-volume-up"></i></button>
-      <div class="vol-bar">
+      <button type="button" class="vol-toggle" aria-label="Mute"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
+      <div class="vol-bar" role="slider" tabindex="0" aria-label="Volume"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="75" aria-orientation="horizontal">
         <div class="level"></div>
       </div>
     </div>
-    <div class="ambient" role="button" tabindex="0" aria-label="Ambient light"><i class="fa fa-lightbulb-o"></i></div>
-    <div class="shuffle"><i class="fa fa-random"></i></div>
+    <button type="button" class="ambient" aria-label="Ambient light" aria-pressed="false"><i class="fa fa-lightbulb-o" aria-hidden="true"></i></button>
+    <button type="button" class="shuffle" aria-label="Shuffle" aria-pressed="false"><i class="fa fa-random" aria-hidden="true"></i></button>
   </div>
-  <div class="track">
+  <div class="track" role="slider" tabindex="0" aria-label="Seek"
+       aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-orientation="horizontal">
     <div class="complete"></div>
+    <div class="thumb"></div>
   </div>
   <div class="playlist-panel">
     <div class="pl-header">
@@ -54,21 +51,20 @@
       <button class="pl-close" type="button" aria-label="Close playlist">&times;</button>
     </div>
     <ul class="pl-list"></ul>
+    <div class="pl-hint">Drop audio files anywhere on the player to add them</div>
   </div>
-  <div class="options-menu">
+  <div class="options-menu" role="menu">
     <div class="options-title">Repeat</div>
     <ul class="options-list">
-      <li data-repeat="off"><i class="fa fa-ban" aria-hidden="true"></i><span>Off</span></li>
-      <li data-repeat="all"><i class="fa fa-repeat" aria-hidden="true"></i><span>All</span></li>
-      <li data-repeat="one"><i class="fa fa-repeat" aria-hidden="true"></i><span>One</span></li>
+      <li role="menuitemradio" data-repeat="off" tabindex="0" aria-checked="true"><i class="fa fa-ban" aria-hidden="true"></i><span>Off</span></li>
+      <li role="menuitemradio" data-repeat="all" tabindex="0" aria-checked="false"><i class="fa fa-repeat" aria-hidden="true"></i><span>All</span></li>
+      <li role="menuitemradio" data-repeat="one" tabindex="0" aria-checked="false"><i class="fa fa-repeat" aria-hidden="true"></i><span>One</span></li>
     </ul>
   </div>
+  <div class="drop-overlay" aria-hidden="true"><i class="fa fa-plus-circle"></i><span>Drop to add to queue</span></div>
   <div class="player-error" role="alert" aria-live="assertive"></div>
 </div>
-  <script src="js/index.js"></script>
-
-
-
+<script src="js/index.js"></script>
 
 </body>
 

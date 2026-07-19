@@ -44,19 +44,36 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` pending
 - [x] Menu button (☰) toggles the playlist/queue panel
 - [x] Mute toggle (press `m`) + remember last volume, with a dynamic volume icon
 
-## Phase 4 — Quality & tooling � (in progress)
+## Phase 4 — Quality & tooling ✅ (done)
 
 - [x] Accessibility: button roles, `aria-label`/`aria-pressed`, keyboard operation, focus outline
 - [x] Graceful error handling for failed audio loads (visible toast with `aria-live`)
 - [x] Responsive / mobile layout (viewport meta + scaled card on small screens)
-- [ ] Optional: real npm build to automate `index.pug → index.html` and `scss → css`
+- [x] Real npm build for `scss → css` (`npm run build:css` / `watch:css`); `index.pug` removed so `index.html` is the single markup source
 - [x] Keep README in sync with implemented features
+
+## Phase 5 — Polish & platform features ✅ (done)
+
+- [x] Semantic markup: every control is a real `<button>` (removed JS role/tabindex/key shims)
+- [x] Seek & volume as accessible sliders: drag (Pointer Events), arrow keys, `aria-valuenow`, visible seek thumb on hover
+- [x] True shuffle: Fisher-Yates queue, no repeats within a pass; respects repeat=off (stops after a full pass)
+- [x] Persist shuffle & repeat (volume/favorites/ambient already persisted)
+- [x] Stable track `id` in the data model; favorites keyed by id instead of file path
+- [x] Media Session API: lock-screen / hardware media keys (play, pause, prev, next, seek) + metadata with cover
+- [x] Global keyboard shortcuts: ← / → seek ±5 s, ↑ / ↓ volume
+- [x] Ambient glow color extracted automatically from the cover (canvas average) with per-track fallback
+- [x] Drag & drop local audio files onto the player (File API + object URLs) with a drop overlay and default cover
+- [x] Dark mode via `prefers-color-scheme` (CSS custom properties theme)
+- [x] Audio samples converted WAV → MP3 (~2.4 MB → ~103 KB)
+- [x] Bourbon removed; plain modern CSS (position/transition) with theme variables
 
 ## Future ideas 💡
 
 - [ ] External URLs / streaming source support (currently local files only)
-- [ ] Loading audio metadata (ID3 tags) automatically
+- [ ] Loading audio metadata (ID3 tags) automatically — would give dropped files real titles/artists/covers
 - [ ] Waveform or richer progress visualization
+- [ ] Replace Font Awesome 4.2 with a small set of inline SVG icons (~560 KB vendor savings)
+- [ ] Unit tests for the pure logic (time formatting, shuffle queue, repeat/ended rules)
 
 ---
 
@@ -75,3 +92,4 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` pending
 | 2026-07-19 | Volume uses a single dynamic icon (click to mute); options menu is now a floating list (icon + short label); added a per-track cinematic glow around the player with an ambient-light toggle (former bottom hamburger). |
 | 2026-07-19 | Enlarged the ambient-light button and added hover tooltips (title) to every control, with dynamic labels for stateful ones (mute, favorite, shuffle, repeat, ambient). |
 | 2026-07-19 | Phase 4: keyboard operability + roles/aria for all controls, visible error toast (aria-live), responsive scaling with viewport meta. |
+| 2026-07-19 | Phase 4 closed + Phase 5: npm build for Sass (Pug & Bourbon removed, `index.html` is the single markup source); real `<button>` controls; drag/keyboard sliders for seek & volume with a hover thumb; Fisher-Yates shuffle that respects repeat=off; shuffle/repeat persisted; favorites keyed by track `id`; Media Session API; ← → ↑ ↓ shortcuts; glow auto-extracted from covers; drag & drop local audio files; dark mode (`prefers-color-scheme`); samples converted WAV → MP3 (2.4 MB → 103 KB). |
